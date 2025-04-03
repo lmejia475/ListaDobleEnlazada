@@ -1,7 +1,67 @@
 ﻿@page "/EliminarAntesDeX"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
 
 <PageTitle>Eliminar Antes de X</PageTitle>
 
-<h1>Eliminar Antes de X</h1>
+<h1>Agregar a la Lista</h1>
+<div>
+    <input id="inputX" class="form-control" @bind-value="ValorNodo"/>
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
+</div>
+<p>@MensajeAgregarFinal</p>
 
-<p>This component demonstrates fetching data from the server.</p>
+
+<br />
+
+<h2>Ingrese el dato X a Eliminar</h2>
+<div>
+    <input id="inputX" class="form-control" @bind-value="DatoAntesDeX"/>
+    <button class="btn btn-danger" @onclick="EliminarAntesDeDatoX">Eliminar Antes de X</button>
+</div>
+<p>@MensajeAntesDeX</p>
+<div>
+    <ul class="list-group">
+
+        @{
+            Nodo aux = Lista.PrimerNodo;
+            while(aux != null)
+            {
+                <li class="list-group-item">@aux.Informacion</li>
+                aux = aux.ReferenciaSiguiente;
+            }
+
+        }
+
+    </ul>
+</div>
+
+@code{
+    public string DatoAntesDeX;
+    public string MensajeAntesDeX;
+    public string MensajeAgregarFinal;
+    public string ValorNodo;
+
+    public LED Lista;
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED();
+        base.OnInitialized();
+    }
+
+    private void AgregarAlFinal()
+    {
+        MensajeAgregarFinal = Lista.AgregarAlFinal(AgregarNodo());
+    }
+
+    private void EliminarAntesDeDatoX()
+    {
+        MensajeAntesDeX = Lista.EliminarAntesDeX(DatoAntesDeX);
+    }
+
+    public Nodo AgregarNodo() { 
+        Nodo nuevoNodo = new Nodo(ValorNodo);
+        return nuevoNodo;
+    }
+}

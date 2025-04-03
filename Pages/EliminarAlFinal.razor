@@ -1,7 +1,63 @@
 ﻿@page "/EliminarAlFinal"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
 
 <PageTitle>Eliminar Al Final</PageTitle>
 
 <h1>Eliminar Al FInal</h1>
 
-<p>This component demonstrates fetching data from the server.</p>
+
+<PageTitle>Eliminar Antes de X</PageTitle>
+
+<h1>Agregar a la Lista</h1>
+<div>
+    <input id="inputX" class="form-control" @bind-value="ValorNodo" />
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
+    <button class="btn btn-danger" @onclick="EliminarAlFinalLista">Eliminar Ultimo Nodo</button>
+</div>
+<p>@Mensaje</p>
+
+<div>
+    <ul class="list-group">
+
+        @{
+            Nodo aux = Lista.PrimerNodo;
+            while (aux != null)
+            {
+                <li class="list-group-item">@aux.Informacion</li>
+                aux = aux.ReferenciaSiguiente;
+            }
+
+        }
+
+    </ul>
+</div>
+
+@code {
+    public string Mensaje;
+    public string ValorNodo;
+
+    public LED Lista;
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED();
+        base.OnInitialized();
+    }
+
+    private void AgregarAlFinal()
+    {
+        Mensaje = Lista.AgregarAlFinal(AgregarNodo());
+    }
+
+    public void EliminarAlFinalLista()
+    {
+        Mensaje = Lista.EliminarAlFinal();
+    }
+
+    public Nodo AgregarNodo()
+    {
+        Nodo nuevoNodo = new Nodo(ValorNodo);
+        return nuevoNodo;
+    }
+}
