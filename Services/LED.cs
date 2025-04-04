@@ -49,33 +49,23 @@ namespace ListaEnlazadaDoble.Services
             }
             while (aux != null)
             {
+                if (aux.Informacion == dato) {
+                    Nodo nodoEliminar = aux.ReferenciaAnterior;
 
-                if (aux.Informacion == dato && aux.ReferenciaAnterior == PrimerNodo && aux == UltimoNodo)
-                {
-                    aux.ReferenciaAnterior = null;
-                    aux.ReferenciaSiguiente = null;
-                    PrimerNodo = aux;
-                    UltimoNodo = aux;
-                    return "Nodo eliminado con éxito";
+                    if(nodoEliminar == PrimerNodo)
+                    {
+                        PrimerNodo = PrimerNodo.ReferenciaSiguiente;
+                        PrimerNodo.ReferenciaAnterior = null;
+                        return "Nodo eliminado con éxito";
+                    }
+                    else
+                    {
+                        aux.ReferenciaAnterior = nodoEliminar.ReferenciaAnterior;
+                        nodoEliminar.ReferenciaAnterior.ReferenciaSiguiente = aux;
+                        return "Nodo eliminado con éxito";
+                    }
                 }
-
-
-                if (aux.Informacion == dato && aux.ReferenciaAnterior == PrimerNodo && aux != UltimoNodo)
-                {
-                    aux.ReferenciaAnterior = null;
-                    PrimerNodo = aux;
-                    return "Nodo eliminado con éxito";
-                }
-
-
-                if (aux.Informacion == dato && aux == UltimoNodo)
-                {
-                    aux.ReferenciaAnterior.ReferenciaAnterior.ReferenciaSiguiente = UltimoNodo;
-                    UltimoNodo.ReferenciaAnterior = aux.ReferenciaAnterior.ReferenciaAnterior;
-                    aux = null;
-                    return "Nodo eliminado con éxito";
-                }
-
+                
                 aux = aux.ReferenciaSiguiente;
             }
                 
@@ -95,7 +85,7 @@ namespace ListaEnlazadaDoble.Services
             {
                 PrimerNodo = null;
                 UltimoNodo = null;
-                return ("Se eliminó el ultimo Nodo");
+                return "Nodo eliminado con éxito";
             }
 
             while (aux != null)
