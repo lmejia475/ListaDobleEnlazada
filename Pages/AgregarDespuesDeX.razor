@@ -1,0 +1,70 @@
+﻿@page "/AgregarDespuesDeX"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
+
+<h4>Agregar Despues de X</h4>
+
+@if (!string.IsNullOrEmpty(mensaje))
+{
+    <p style="color: red;">@mensaje</p>
+}
+<div class="container">
+    <div
+        <input id="inputX" class="form-control" @bind-value="nuevoValor" placeholder="Escribe el valor del nodo" />
+        <div class="mb-2"></div>
+        <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar Nodo</button>
+    </div>
+
+    <div>
+        <div class="mb-2"></div>
+        <label for="posicion" class="form-label">Posición X</label>
+        <input id="posicion" type="number" class="form-control" @bind="posicion" />
+        <div class="mb-3"></div>
+        <input id="nuevoValor" class="form-control" @bind="nuevoValor" placeholder="Escribe el nuevo valor" />
+        <div class="mb-2"></div>
+        <button class="btn btn-warning" @onclick="InsertarDespuesDeX">Agregar Después de X</button>
+    </div>
+</div>
+
+<div class="mb-3"></div>
+
+<h3>Elementos en la Lista</h3>
+<ul class="list-group">
+    @foreach (var item in Lista.ObtenerValores())
+    {
+        <li class="list-group-item">@item</li>
+    }
+</ul>
+
+
+@code {
+    private string nuevoValor = "";
+    private int posicion;
+    private string mensaje = "";
+
+    public LED Lista { get; set; } = new LED(); 
+
+    private void AgregarAlFinal()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevoValor))
+        {
+            Nodo nuevoNodo = new Nodo(nuevoValor); 
+            mensaje = Lista.AgregarAlFinal(nuevoNodo);
+            nuevoValor = "";
+        }
+    }
+
+    private void InsertarDespuesDeX()
+    {
+        if (posicion >= 0 && !string.IsNullOrWhiteSpace(nuevoValor))
+        {
+            mensaje = Lista.InsertarDespuesDeX(posicion, nuevoValor);
+            nuevoValor = "";
+        }
+        else
+        {
+            mensaje = "Por favor ingrese una posición válida.";
+        }
+    }
+}
+
