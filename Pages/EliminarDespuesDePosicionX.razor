@@ -1,33 +1,30 @@
-﻿@page "/EliminarAntesDeX"
+﻿@page "/EliminarDespuesDePosicionX"
 @using ListaEnlazadaDoble.Services
 @using ListaEnlazadaDoble.Models
 
-<PageTitle>Eliminar Antes de X</PageTitle>
+
+<h3>Eliminar Nodo Despues De Posicion X</h3>
 
 <h1>Agregar a la Lista</h1>
 <div>
-    <input id="inputX" class="form-control" @bind-value="ValorNodo"/>
+    <input id="inputX" class="form-control" @bind-value="ValorNodo" />
     <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
 </div>
 <p>@MensajeAgregarFinal</p>
 
-
-<br />
-
-<h2>Ingrese el dato X a Eliminar</h2>
+<h2>Ingrese la Posicion X para eliminar despues de ella</h2>
 <div>
-    <input id="inputX" class="form-control" @bind-value="DatoAntesDeX"/>
-    <button class="btn btn-danger" @onclick="EliminarAntesDeDatoX">Eliminar Antes de X</button>
+    <input id="inputX" class="form-control" @bind-value="PosicionX" />
+    <button class="btn btn-danger" @onclick="EliminarDespuesPosicionX">Eliminar Despues de Posicion X</button>
 </div>
-<p>@MensajeAntesDeX</p>
-
+<p>@MensajeEliminarDespuesDePosicionX</p>
 
 <div>
     <ul class="list-group">
 
         @{
             Nodo aux = Lista.PrimerNodo;
-            while(aux != null)
+            while (aux != null)
             {
                 <li class="list-group-item">@aux.Informacion</li>
                 aux = aux.ReferenciaSiguiente;
@@ -38,11 +35,12 @@
     </ul>
 </div>
 
-@code{
-    public string DatoAntesDeX;
-    public string MensajeAntesDeX;
-    public string MensajeAgregarFinal;
+@code {
+
     public string ValorNodo;
+    public string MensajeAgregarFinal;
+    public string MensajeEliminarDespuesDePosicionX;
+    public int PosicionX;
 
     public LED Lista;
 
@@ -57,13 +55,15 @@
         MensajeAgregarFinal = Lista.AgregarAlFinal(AgregarNodo());
     }
 
-    private void EliminarAntesDeDatoX()
+    private void EliminarDespuesPosicionX()
     {
-        MensajeAntesDeX = Lista.EliminarAntesDeX(DatoAntesDeX);
+        MensajeEliminarDespuesDePosicionX = Lista.EliminarDespuesDePosicionX(PosicionX);
     }
 
-    public Nodo AgregarNodo() { 
+    public Nodo AgregarNodo()
+    {
         Nodo nuevoNodo = new Nodo(ValorNodo);
         return nuevoNodo;
     }
+
 }

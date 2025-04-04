@@ -1,0 +1,28 @@
+# Ignorar carpetas de compilación
+bin/
+obj/
+
+# Archivos de configuración de usuario de Visual Studio
+.vs/
+*.user
+*.suo
+
+# Archivos compilados
+*.dll
+*.pdb
+*.exe
+
+# Archivos temporales
+*.log
+*.tmp
+*.bak
+*.old
+
+# Configuración del editor
+.vscode/
+.idea/
+*.code-workspace
+
+# Archivos específicos de sistemas operativos
+.DS_Store
+Thumbs.db

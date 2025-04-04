@@ -1,0 +1,63 @@
+﻿@page "/EliminarConInformacionX"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
+
+<h3>Eliminar Nodo con Informacion "X" </h3>
+
+<h1>Agregar a la Lista</h1>
+<div>
+    <input id="inputAgregar" class="form-control" @bind-value="ValorNodo" />
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
+</div>
+<p>@MensajeAgregarFinal</p>
+
+<h2>Ingrese la Información para eliminar ese nodo</h2>
+<div>
+    <input id="inputEliminar" class="form-control" @bind-value="InformacionX" />
+    <button class="btn btn-danger" @onclick="EliminarPorInformacion">Eliminar Nodo con esa Información</button>
+</div>
+<p>@MensajeEliminarPorInformacion</p>
+
+<div>
+    <ul class="list-group">
+        @{
+            Nodo aux = Lista.PrimerNodo;
+            while (aux != null)
+            {
+                <li class="list-group-item">@aux.Informacion</li>
+                aux = aux.ReferenciaSiguiente;
+            }
+        }
+    </ul>
+</div>
+
+@code {
+
+    public string ValorNodo;
+    public string InformacionX;
+    public string MensajeAgregarFinal;
+    public string MensajeEliminarPorInformacion;
+
+    public LED Lista;
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED();
+        base.OnInitialized();
+    }
+
+    private void AgregarAlFinal()
+    {
+        MensajeAgregarFinal = Lista.AgregarAlFinal(AgregarNodo());
+    }
+
+    private void EliminarPorInformacion()
+    {
+        MensajeEliminarPorInformacion = Lista.EliminarPorInformacion(InformacionX);
+    }
+
+    public Nodo AgregarNodo()
+    {
+        return new Nodo(ValorNodo);
+    }
+}
