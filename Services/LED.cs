@@ -87,19 +87,12 @@ namespace ListaEnlazadaDoble.Services
                 UltimoNodo = null;
                 return "Nodo eliminado con éxito";
             }
+            else { 
+                UltimoNodo = UltimoNodo.ReferenciaAnterior;
+                UltimoNodo.ReferenciaSiguiente = null;
+                return "Nodo eliminado con éxito";
 
-            while (aux != null)
-            {
-             
-                if(aux.ReferenciaSiguiente == UltimoNodo)
-                {
-                    aux.ReferenciaSiguiente = null;
-                    UltimoNodo = aux;
-                    return "Nodo eliminado con éxito";
-                }
-                aux = aux.ReferenciaSiguiente;
             }
-
             return "Error al eliminar nodo";
         }
 
