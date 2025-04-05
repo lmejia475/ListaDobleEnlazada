@@ -1,8 +1,8 @@
-﻿@page "/EliminarAlInicio"
+﻿@page "/AgregarAntesDeDato"
 @using ListaEnlazadaDoble.Services
 @using ListaEnlazadaDoble.Models
 
-<h3>Eliminar al inicio</h3>
+<h3>Agregar Antes de dato X</h3>
 
 @if (!string.IsNullOrEmpty(mensaje))
 {
@@ -16,8 +16,12 @@
 </div>
 
 <div class="mb-3">
-    <button class="btn btn-danger" @onclick="EliminaralInicio">Eliminar al Inicio</button>
+    <label>Insertar antes del dato:</label>
+    <input class="form-control" @bind="datoReferencia" placeholder="Dato existente" />
+    <input class="form-control mt-1" @bind="nuevoValor2" placeholder="Nuevo valor a insertar" />
+    <button class="btn btn-success mt-1" @onclick="InsertarAntesDeDato">Insertar Antes del Dato</button>
 </div>
+
 
 <h4>Elementos en la Lista</h4>
 <ul>
@@ -26,6 +30,7 @@
         <li>@item</li>
     }
 </ul>
+
 @code {
     private LED lista = new LED();
 
@@ -44,8 +49,16 @@
         }
     }
 
-    private void EliminaralInicio()
+    private void InsertarAntesDeDato()
     {
-        mensaje = lista.EliminaralInicio();
+        if (!string.IsNullOrWhiteSpace(datoReferencia) && !string.IsNullOrWhiteSpace(nuevoValor2))
+        {
+            mensaje = lista.InsertarAntesDeDato(datoReferencia, nuevoValor2);
+        }
+        else
+        {
+            mensaje = "Faltan datos para insertar antes del dato.";
+        }
     }
+
 }
