@@ -16,6 +16,26 @@ namespace ListaEnlazadaDoble.Services
         {
             return PrimerNodo == null;
         }
+        public string AgregarAlInicio(Nodo nodo)
+        {
+            if (EstaVacia())
+            {
+                PrimerNodo = nodo;
+                UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
+                return "Nodo agregado con éxito";
+
+            }
+            else
+            {
+                nodo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nodo;
+                PrimerNodo = nodo;
+                nodo.ReferenciaAnterior = null;
+                return "Nodo agregado con éxito";
+            }
+                return "Error";
+        }
 
         public string AgregarAlFinal(Nodo nodo) {
             
@@ -23,6 +43,7 @@ namespace ListaEnlazadaDoble.Services
             {
                 PrimerNodo = nodo;
                 UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
                 return "Nodo agregado con éxito";
 
             }
@@ -31,6 +52,7 @@ namespace ListaEnlazadaDoble.Services
                 UltimoNodo.ReferenciaSiguiente = nodo;
                 nodo.ReferenciaAnterior = UltimoNodo;
                 UltimoNodo = nodo;
+                nodo.ReferenciaSiguiente = null;
                 return "Nodo agregado con éxito";
             }
             return "Error";
@@ -71,6 +93,33 @@ namespace ListaEnlazadaDoble.Services
             }
                 
             return "Error al eliminar nodo";
+        }
+        public string EliminarAntesDePosicion(int posicionX)
+        {
+            if (PrimerNodo == null) return "La lista está vacía.";
+            if (posicionX <= 1) return "No existe nodo antes de la posición 1.";
+
+            if (posicionX == 2)
+            {
+                PrimerNodo = PrimerNodo.ReferenciaSiguiente;
+                PrimerNodo.ReferenciaAnterior = null;
+                return "Nodo en posición 1 eliminado.";
+            }
+
+            Nodo actual = PrimerNodo;
+            for (int i = 1; i < posicionX; i++)
+            {
+                actual = actual.ReferenciaSiguiente;
+            }
+
+            if (actual == null)
+                return $"No existe nodo en la posición {posicionX}.";
+
+            
+            actual.ReferenciaAnterior = actual.ReferenciaAnterior.ReferenciaAnterior;
+            actual.ReferenciaAnterior.ReferenciaSiguiente = actual;
+
+            return $"Nodo en posición {posicionX - 1} eliminado.";
         }
 
 

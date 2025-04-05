@@ -1,19 +1,26 @@
-﻿@page "/AgregarAlFinal"
+﻿@page "/EliminarAntesDePosicionX"
 @using ListaEnlazadaDoble.Services
 @using ListaEnlazadaDoble.Models
 
-<PageTitle>Agregar Al Final</PageTitle>
+<PageTitle>Eliminar Antes de posicion X</PageTitle>
 
-<h1>Agregar Al Final</h1>
-
+<h1>Agregar a la Lista</h1>
 <div>
     <input id="inputX" class="form-control" @bind-value="ValorNodo" />
-    <button class="btn btn-primary" @onclick="AgregaralFinal">Agregar al final</button>
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
     <button class="btn btn-primary" @onclick="AgregarAlInicio">Agregar al inicio</button>
- 
 </div>
 <p>@Mensaje</p>
 
+
+<br />
+
+<h2>Ingrese poscicion X </h2>
+<div>
+    <input id="inputX" class="form-control" @bind-value="DatoAntesDeX" />
+    <button class="btn btn-danger" @onclick="EliminarAntesDDePosicionX">Eliminar Antes de posicion X</button>
+</div>
+<p>@MensajeAntesDeX</p>
 <div>
     <ul class="list-group">
 
@@ -30,8 +37,9 @@
     </ul>
 </div>
 
-
 @code {
+    public int DatoAntesDeX;
+    public string MensajeAntesDeX;
     public string Mensaje;
     public string ValorNodo;
 
@@ -43,18 +51,23 @@
         base.OnInitialized();
     }
 
-    private void AgregaralFinal()
+    private void AgregarAlFinal()
     {
         Mensaje = Lista.AgregarAlFinal(AgregarNodo());
+    }
+
+    private void EliminarAntesDDePosicionX()
+    {
+        MensajeAntesDeX = Lista.EliminarAntesDePosicion(DatoAntesDeX);
     }
     private void AgregarAlInicio()
     {
         Mensaje = Lista.AgregarAlInicio(AgregarNodo());
     }
+
     public Nodo AgregarNodo()
     {
         Nodo nuevoNodo = new Nodo(ValorNodo);
         return nuevoNodo;
     }
-
 }
