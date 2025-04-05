@@ -16,6 +16,26 @@ namespace ListaEnlazadaDoble.Services
         {
             return PrimerNodo == null;
         }
+        public string AgregarAlInicio(Nodo nodo)
+        {
+            if (EstaVacia())
+            {
+                PrimerNodo = nodo;
+                UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
+                return "Nodo agregado con éxito";
+
+            }
+            else
+            {
+                nodo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nodo;
+                PrimerNodo = nodo;
+                nodo.ReferenciaAnterior = null;
+                return "Nodo agregado con éxito";
+            }
+                return "Error";
+        }
 
         public string AgregarAlFinal(Nodo nodo) {
             
@@ -23,6 +43,7 @@ namespace ListaEnlazadaDoble.Services
             {
                 PrimerNodo = nodo;
                 UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
                 return "Nodo agregado con éxito";
 
             }
@@ -31,10 +52,12 @@ namespace ListaEnlazadaDoble.Services
                 UltimoNodo.ReferenciaSiguiente = nodo;
                 nodo.ReferenciaAnterior = UltimoNodo;
                 UltimoNodo = nodo;
+                nodo.ReferenciaSiguiente = null;
                 return "Nodo agregado con éxito";
             }
             return "Error";
         }
+
         
         public string EliminarAntesDeX(string dato) { 
             Nodo aux = PrimerNodo;
@@ -49,37 +72,54 @@ namespace ListaEnlazadaDoble.Services
             }
             while (aux != null)
             {
+                if (aux.Informacion == dato) {
+                    Nodo nodoEliminar = aux.ReferenciaAnterior;
 
-                if (aux.Informacion == dato && aux.ReferenciaAnterior == PrimerNodo && aux == UltimoNodo)
-                {
-                    aux.ReferenciaAnterior = null;
-                    aux.ReferenciaSiguiente = null;
-                    PrimerNodo = aux;
-                    UltimoNodo = aux;
-                    return "Nodo eliminado con éxito";
+                    if(nodoEliminar == PrimerNodo)
+                    {
+                        PrimerNodo = PrimerNodo.ReferenciaSiguiente;
+                        PrimerNodo.ReferenciaAnterior = null;
+                        return "Nodo eliminado con éxito";
+                    }
+                    else
+                    {
+                        aux.ReferenciaAnterior = nodoEliminar.ReferenciaAnterior;
+                        nodoEliminar.ReferenciaAnterior.ReferenciaSiguiente = aux;
+                        return "Nodo eliminado con éxito";
+                    }
                 }
-
-
-                if (aux.Informacion == dato && aux.ReferenciaAnterior == PrimerNodo && aux != UltimoNodo)
-                {
-                    aux.ReferenciaAnterior = null;
-                    PrimerNodo = aux;
-                    return "Nodo eliminado con éxito";
-                }
-
-
-                if (aux.Informacion == dato && aux == UltimoNodo)
-                {
-                    aux.ReferenciaAnterior.ReferenciaAnterior.ReferenciaSiguiente = UltimoNodo;
-                    UltimoNodo.ReferenciaAnterior = aux.ReferenciaAnterior.ReferenciaAnterior;
-                    aux = null;
-                    return "Nodo eliminado con éxito";
-                }
-
+                
                 aux = aux.ReferenciaSiguiente;
             }
                 
             return "Error al eliminar nodo";
+        }
+        public string EliminarAntesDePosicion(int posicionX)
+        {
+            if (PrimerNodo == null) return "La lista está vacía.";
+            if (posicionX <= 1) return "No existe nodo antes de la posición 1.";
+
+            if (posicionX == 2)
+            {
+                PrimerNodo = PrimerNodo.ReferenciaSiguiente;
+                PrimerNodo.ReferenciaAnterior = null;
+                return "Nodo en posición 1 eliminado.";
+            }
+
+            Nodo actual = PrimerNodo;
+            for (int i = 1; i < posicionX; i++)
+            {
+                actual = actual.ReferenciaSiguiente;
+            }
+
+            if (actual == null)
+                return $"No existe nodo en la posición {posicionX}.";
+
+            
+            actual.ReferenciaAnterior = actual.ReferenciaAnterior.ReferenciaAnterior;
+            actual.ReferenciaAnterior.ReferenciaSiguiente = actual;
+
+            return $"Nodo en posición {posicionX - 1} eliminado.";
         }
 
 
@@ -95,22 +135,112 @@ namespace ListaEnlazadaDoble.Services
             {
                 PrimerNodo = null;
                 UltimoNodo = null;
-                return ("Se eliminó el ultimo Nodo");
+                return "Nodo eliminado con éxito";
             }
+            else { 
+                UltimoNodo = UltimoNodo.ReferenciaAnterior;
+                UltimoNodo.ReferenciaSiguiente = null;
+                return "Nodo eliminado con éxito";
+
+            }
+            return "Error al eliminar nodo";
+        }
+
+        public string EliminarDespuesDePosicionX(int X)
+        {
+            if (EstaVacia())
+            {
+                return "Lista vacía";
+            }
+
+            Nodo? aux = PrimerNodo;
+            int contador = 0;
+
+            //moverse hasta la posicion X
+            while (aux != null && contador < X)
+            {
+                aux = aux.ReferenciaSiguiente;
+                contador++;
+            }
+
+            if (aux == null)
+            {
+                return "posicion, " + X + " no existe en la lista";
+            }
+
+            if (aux.ReferenciaSiguiente == null)
+            {
+                return "No hay nodo para eliminar despues de posición: " + X;
+            }
+
+            Nodo nodoEliminar = aux.ReferenciaSiguiente;
+
+            aux.ReferenciaSiguiente = nodoEliminar.ReferenciaSiguiente;
+
+            if (nodoEliminar.ReferenciaSiguiente != null)
+            {
+                nodoEliminar.ReferenciaSiguiente.ReferenciaAnterior = aux;
+            }
+            else
+            {
+                // Si el nodo a eliminar era el último
+                UltimoNodo = aux;
+            }
+
+            return "Nodo eliminado despues de posición " + X;
+        }
+
+        public string EliminarPorInformacion(string infoX)
+        {
+            if (EstaVacia())
+            {
+                return "Lista vacía";
+            }
+
+            Nodo? aux = PrimerNodo;
 
             while (aux != null)
             {
-             
-                if(aux.ReferenciaSiguiente == UltimoNodo)
+                if (aux.Informacion == infoX)
                 {
-                    aux.ReferenciaSiguiente = null;
-                    UltimoNodo = aux;
-                    return "Nodo eliminado con éxito";
+                    // Si es el único nodo
+                    if (PrimerNodo == UltimoNodo)
+                    {
+                        PrimerNodo = null;
+                        UltimoNodo = null;
+                    }
+                    // Si es el primer nodo
+                    else if (aux == PrimerNodo)
+                    {
+                        PrimerNodo = aux.ReferenciaSiguiente;
+                        if (PrimerNodo != null)
+                        {
+                            PrimerNodo.ReferenciaAnterior = null;
+                        }
+                    }
+                    // Si es el último nodo
+                    else if (aux == UltimoNodo)
+                    {
+                        UltimoNodo = aux.ReferenciaAnterior;
+                        if (UltimoNodo != null)
+                        {
+                            UltimoNodo.ReferenciaSiguiente = null;
+                        }
+                    }
+                    // Nodo en medio de la lista
+                    else
+                    {
+                        aux.ReferenciaAnterior!.ReferenciaSiguiente = aux.ReferenciaSiguiente;
+                        aux.ReferenciaSiguiente!.ReferenciaAnterior = aux.ReferenciaAnterior;
+                    }
+
+                    return $"Nodo con información '{infoX}' eliminado con éxito.";
                 }
+
                 aux = aux.ReferenciaSiguiente;
             }
 
-            return "Error al eliminar nodo";
+            return $"No se encontró un nodo con la información '{infoX}'.";
         }
 
         public string InsertarAntesDeX(int posicion, string informacion)
