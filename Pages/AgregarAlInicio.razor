@@ -1,7 +1,52 @@
 ﻿@page "/"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
 
-<PageTitle>Agregar al Inicio</PageTitle>
+<PageTitle>Agregar Al Inicio</PageTitle>
 
-<h1>Agregar Al inicio</h1>
+<h1>Agregar Al Inicio</h1>
 
-Welcome to your new app.
+<div>
+    <input id="inputX" class="form-control" @bind-value="ValorNodo" placeholder="Ingresa el valor del nodo" />
+    <button class="btn btn-primary" @onclick="AgregarInicio">Agregar al inicio</button>
+</div>
+<p style="color: green;">@Mensaje</p>
+
+<div>
+    <ul class="list-group">
+        @{
+            Nodo aux = Lista.PrimerNodo;
+            while (aux != null)
+            {
+                <li class="list-group-item">@aux.Informacion</li>
+                aux = aux.ReferenciaSiguiente;
+            }
+        }
+    </ul>
+</div>
+
+@code {
+    public string Mensaje;
+    public string ValorNodo;
+
+    public LED Lista;
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED(); // Inicializa la lista correctamente
+        base.OnInitialized();
+    }
+
+    private void AgregarInicio()
+    {
+        if (!string.IsNullOrWhiteSpace(ValorNodo))
+        {
+            Mensaje = Lista.AgregarAlInicio(ValorNodo); // Llama al método
+            ValorNodo = ""; // Limpia el valor del campo
+        }
+        else
+        {
+            Mensaje = "POR FAVOR, INGRESE UN VALOR VÁLIDO."; // Error si el valor es inválido
+        }
+    }
+}

@@ -1,4 +1,5 @@
 ﻿using ListaEnlazadaDoble.Models;
+using System.Globalization;
 
 namespace ListaEnlazadaDoble.Services
 {
@@ -34,12 +35,13 @@ namespace ListaEnlazadaDoble.Services
                 nodo.ReferenciaAnterior = null;
                 return "Nodo agregado con éxito";
             }
-                return "Error";
+            return "Error";
         }
 
-        public string AgregarAlFinal(Nodo nodo) {
-            
-            if(EstaVacia())
+        public string AgregarAlFinal(Nodo nodo)
+        {
+
+            if (EstaVacia())
             {
                 PrimerNodo = nodo;
                 UltimoNodo = nodo;
@@ -58,8 +60,9 @@ namespace ListaEnlazadaDoble.Services
             return "Error";
         }
 
-        
-        public string EliminarAntesDeX(string dato) { 
+
+        public string EliminarAntesDeX(string dato)
+        {
             Nodo aux = PrimerNodo;
 
             if (EstaVacia())
@@ -72,10 +75,11 @@ namespace ListaEnlazadaDoble.Services
             }
             while (aux != null)
             {
-                if (aux.Informacion == dato) {
+                if (aux.Informacion == dato)
+                {
                     Nodo nodoEliminar = aux.ReferenciaAnterior;
 
-                    if(nodoEliminar == PrimerNodo)
+                    if (nodoEliminar == PrimerNodo)
                     {
                         PrimerNodo = PrimerNodo.ReferenciaSiguiente;
                         PrimerNodo.ReferenciaAnterior = null;
@@ -88,10 +92,10 @@ namespace ListaEnlazadaDoble.Services
                         return "Nodo eliminado con éxito";
                     }
                 }
-                
+
                 aux = aux.ReferenciaSiguiente;
             }
-                
+
             return "Error al eliminar nodo";
         }
         public string EliminarAntesDePosicion(int posicionX)
@@ -115,7 +119,7 @@ namespace ListaEnlazadaDoble.Services
             if (actual == null)
                 return $"No existe nodo en la posición {posicionX}.";
 
-            
+
             actual.ReferenciaAnterior = actual.ReferenciaAnterior.ReferenciaAnterior;
             actual.ReferenciaAnterior.ReferenciaSiguiente = actual;
 
@@ -137,7 +141,8 @@ namespace ListaEnlazadaDoble.Services
                 UltimoNodo = null;
                 return "Nodo eliminado con éxito";
             }
-            else { 
+            else
+            {
                 UltimoNodo = UltimoNodo.ReferenciaAnterior;
                 UltimoNodo.ReferenciaSiguiente = null;
                 return "Nodo eliminado con éxito";
@@ -264,7 +269,7 @@ namespace ListaEnlazadaDoble.Services
                 nodoActual = nodoActual.ReferenciaSiguiente;
             }
 
-            if (nodoActual == null) return "Posición fuera de rango"; 
+            if (nodoActual == null) return "Posición fuera de rango";
 
             nodoNuevo.ReferenciaSiguiente = nodoActual;
             nodoNuevo.ReferenciaAnterior = nodoActual.ReferenciaAnterior;
@@ -281,7 +286,7 @@ namespace ListaEnlazadaDoble.Services
 
         public string InsertarDespuesDeX(int posicion, string informacion)
         {
-            if (posicion < 0 || PrimerNodo == null) return "Posición inválida"; 
+            if (posicion < 0 || PrimerNodo == null) return "Posición inválida";
 
             Nodo nodoNuevo = new Nodo(informacion);
             Nodo nodoActual = PrimerNodo;
@@ -291,7 +296,7 @@ namespace ListaEnlazadaDoble.Services
                 nodoActual = nodoActual.ReferenciaSiguiente;
             }
 
-            if (nodoActual == null) return "Posición fuera de rango"; 
+            if (nodoActual == null) return "Posición fuera de rango";
 
             nodoNuevo.ReferenciaSiguiente = nodoActual.ReferenciaSiguiente;
             nodoNuevo.ReferenciaAnterior = nodoActual;
@@ -317,5 +322,102 @@ namespace ListaEnlazadaDoble.Services
             }
             return valores;
         }
+        public string AgregarNodoInicio(Nodo nodo) //para poder insertar despues
+        {
+            if (EstaVacia())
+            {
+                PrimerNodo = nodo;
+                UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
+                return "Nodo agregado con éxito";
+
+            }
+            else
+            {
+                nodo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nodo;
+                PrimerNodo = nodo;
+                nodo.ReferenciaAnterior = null;
+                return "Nodo agregado con éxito";
+            }
+            return "Error";
+        }
+        public string InsertarDespuesDeX(string dato, string nuevoDato)
+        {
+            Nodo aux = PrimerNodo;
+            if (EstaVacia())
+            {
+                
+
+            }
+            while (aux != null)
+            {
+                if (aux.Informacion == dato)
+                {
+                    Nodo nuevoNodo = new Nodo();
+                    nuevoNodo.Informacion = nuevoDato;
+
+                    nuevoNodo.ReferenciaSiguiente = aux.ReferenciaSiguiente;
+                    nuevoNodo.ReferenciaAnterior = aux;
+                    if (aux.ReferenciaSiguiente != null)
+                    {
+                        aux.ReferenciaSiguiente.ReferenciaAnterior = nuevoNodo;
+
+                    }
+                    aux.ReferenciaSiguiente = nuevoNodo;
+                    return "NODO INSERTADO CON EXITO DESPUES DEL DATO: " + dato;
+                }
+                aux = aux.ReferenciaSiguiente;
+            }
+            return "DATO NO ENCONTRADO EN LA LISTA";
+        }
+        public string EliminarDespuesDeDatoX(string dato)
+        {
+            Nodo aux = PrimerNodo;
+            if (EstaVacia())
+            {
+                return "LISTA VACIA";
+
+            }
+            while (aux != null)
+            {
+                if (aux.Informacion == dato)
+                {
+                    Nodo nodoEliminar = aux.ReferenciaSiguiente;
+                    if (nodoEliminar == null)
+                    {
+                        return "NO HAY NODOS POR ELIMINAR DESPUES DEL DATO: " + dato;
+
+                    }
+                    else
+                    {
+                        aux.ReferenciaSiguiente = nodoEliminar.ReferenciaSiguiente;
+                        if (nodoEliminar.ReferenciaSiguiente != null)
+                        {
+                            nodoEliminar.ReferenciaSiguiente.ReferenciaAnterior = aux;
+                        }
+                        return "NODO ELIMINADO CON EXITO";
+                    }
+                }
+                aux = aux.ReferenciaSiguiente;
+
+            }
+            return "DATO NO ENCONTRADO EN LA LISTA";
+        }
+        public string AgregarAlInicio(string nuevoDato)
+        {
+            Nodo nuevoNodo = new Nodo();
+            nuevoNodo.Informacion = nuevoDato;
+            if (EstaVacia())
+            {
+                PrimerNodo = nuevoNodo;
+                return "NODO AGREGADO CON EXITO AL INICO, (ANTERIORMENTE LA LISTA ESTABA VACIA)";
+            }
+            nuevoNodo.ReferenciaSiguiente = PrimerNodo;
+            PrimerNodo.ReferenciaAnterior = nuevoNodo;
+            PrimerNodo = nuevoNodo;
+            return "NODO AGREGADO CON EXITO AL INICIO";
+        }
     }
 }
+
