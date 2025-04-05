@@ -311,6 +311,61 @@ namespace ListaEnlazadaDoble.Services
             return "Nodo insertado correctamente";
         }
 
+        public string EliminaralInicio()
+        {
+            if (EstaVacia())
+                return "La lista está vacía, no se puede eliminar.";
+
+            if (PrimerNodo == UltimoNodo)
+            {
+                PrimerNodo = null;
+                UltimoNodo = null;
+            }
+            else
+            {
+                PrimerNodo = PrimerNodo.ReferenciaSiguiente;
+                PrimerNodo.ReferenciaAnterior = null;
+            }
+
+            return "Nodo eliminado al inicio correctamente.";
+        }
+
+        public string InsertarAntesDeDato(string datoReferencia, string nuevoValor)
+        {
+            if (EstaVacia())
+                return "La lista está vacía.";
+
+            Nodo actual = PrimerNodo;
+
+            while (actual != null && actual.Informacion != datoReferencia)
+            {
+                actual = actual.ReferenciaSiguiente;
+            }
+
+            if (actual == null)
+                return "El dato de referencia no existe en la lista.";
+
+            Nodo nuevo = new Nodo(nuevoValor);
+
+            if (actual == PrimerNodo)
+            {
+                nuevo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nuevo;
+                PrimerNodo = nuevo;
+            }
+            else
+            {
+                Nodo anterior = actual.ReferenciaAnterior;
+                anterior.ReferenciaSiguiente = nuevo;
+                nuevo.ReferenciaAnterior = anterior;
+
+                nuevo.ReferenciaSiguiente = actual;
+                actual.ReferenciaAnterior = nuevo;
+            }
+
+            return "Nodo insertado antes del dato correctamente.";
+        }
+
         public List<string> ObtenerValores()
         {
             List<string> valores = new List<string>();
