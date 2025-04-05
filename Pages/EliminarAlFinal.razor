@@ -8,7 +8,8 @@
 <PageTitle>Eliminar Al Final</PageTitle>
 <div>
     <input id="inputX" class="form-control" @bind-value="ValorNodo" />
-    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
+    <button class="btn btn-primary" @onclick="AgregarAlInicio">Agregar al inicio</button>
     <button class="btn btn-danger" @onclick="EliminarAlFinalLista">Eliminar Ultimo Nodo</button>
 </div>
 <p>@Mensaje</p>
@@ -45,6 +46,10 @@
     private void AgregarAlFinal()
     {
         Mensaje = Lista.AgregarAlFinal(AgregarNodo());
+    }
+    private void AgregarAlInicio()
+    {
+        Mensaje = Lista.AgregarAlInicio(AgregarNodo());
     }
 
     public void EliminarAlFinalLista()

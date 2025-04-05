@@ -1,24 +1,27 @@
-﻿@page "/EliminarDespuesDePosicionX"
+﻿@page "/EliminarDespuesDeDatoX"
 @using ListaEnlazadaDoble.Services
 @using ListaEnlazadaDoble.Models
 
-
-<h3>Eliminar Nodo Despues De Posicion X</h3>
+<PageTitle>Eliminar Después de Dato X</PageTitle>
 
 <h1>Agregar a la Lista</h1>
 <div>
-    <input id="inputX" class="form-control" @bind-value="ValorNodo" />
+    <input id="inputX" class="form-control" @bind-value="ValorNodo" placeholder="INGRESA EL VALOR DEL NODO" />
     <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
     <button class="btn btn-primary" @onclick="AgregarAlInicio">Agregar al inicio</button>
 </div>
 <p>@MensajeAgregarFinal</p>
 
-<h2>Ingrese la Posicion X para eliminar despues de ella</h2>
+
+<br />
+
+<h2>INGRESE EL DATO X PARA ELIMINAR DESPUES</h2>
 <div>
-    <input id="inputX" class="form-control" @bind-value="PosicionX" />
-    <button class="btn btn-danger" @onclick="EliminarDespuesPosicionX">Eliminar Despues de Posicion X</button>
+    <input id="inputX" class="form-control" @bind-value="DatoDespuesDeDatoX" placeholder="INGRESA EL DATO X" />
+    <button class="btn btn-danger" @onclick="EliminarDespuesDatoX">Eliminar Después de Dato X</button>
 </div>
-<p>@MensajeEliminarDespuesDePosicionX</p>
+<p>@MensajeDespuesDeDatoX</p>
+
 
 <div>
     <ul class="list-group">
@@ -37,11 +40,10 @@
 </div>
 
 @code {
-
-    public string ValorNodo;
+    public string DatoDespuesDeDatoX;
+    public string MensajeDespuesDeDatoX;
     public string MensajeAgregarFinal;
-    public string MensajeEliminarDespuesDePosicionX;
-    public int PosicionX;
+    public string ValorNodo;
 
     public LED Lista;
 
@@ -61,9 +63,9 @@
         MensajeAgregarFinal = Lista.AgregarAlInicio(AgregarNodo());
     }
 
-    private void EliminarDespuesPosicionX()
+    private void EliminarDespuesDatoX()
     {
-        MensajeEliminarDespuesDePosicionX = Lista.EliminarDespuesDePosicionX(PosicionX);
+        MensajeDespuesDeDatoX = Lista.EliminarDespuesDeDatoX(DatoDespuesDeDatoX);
     }
 
     public Nodo AgregarNodo()
@@ -71,5 +73,4 @@
         Nodo nuevoNodo = new Nodo(ValorNodo);
         return nuevoNodo;
     }
-
 }

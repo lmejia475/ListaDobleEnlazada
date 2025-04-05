@@ -387,5 +387,109 @@ namespace ListaEnlazadaDoble.Services
             }
             return valores;
         }
+        public string AgregarNodoInicio(Nodo nodo) //para poder insertar despues
+        {
+            if (EstaVacia())
+            {
+                PrimerNodo = nodo;
+                UltimoNodo = nodo;
+                nodo.ReferenciaAnterior = nodo.ReferenciaSiguiente = null;
+                return "Nodo agregado con éxito";
+
+            }
+            else
+            {
+                nodo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nodo;
+                PrimerNodo = nodo;
+                nodo.ReferenciaAnterior = null;
+                return "Nodo agregado con éxito";
+            }
+            return "Error";
+        }
+        public string InsertarDespuesDeX(string dato, string nuevoDato)
+        {
+            Nodo aux = PrimerNodo;
+            if (EstaVacia())
+            {
+
+
+            }
+            while (aux != null)
+            {
+                if (aux.Informacion == dato)
+                {
+                    Nodo nuevoNodo = new Nodo();
+                    nuevoNodo.Informacion = nuevoDato;
+
+                    nuevoNodo.ReferenciaSiguiente = aux.ReferenciaSiguiente;
+                    nuevoNodo.ReferenciaAnterior = aux;
+                    if (aux.ReferenciaSiguiente != null)
+                    {
+                        aux.ReferenciaSiguiente.ReferenciaAnterior = nuevoNodo;
+
+                    }
+                    aux.ReferenciaSiguiente = nuevoNodo;
+                    return "NODO INSERTADO CON EXITO DESPUES DEL DATO: " + dato;
+                }
+                aux = aux.ReferenciaSiguiente;
+            }
+            return "DATO NO ENCONTRADO EN LA LISTA";
+        }
+        public string EliminarDespuesDeDatoX(string dato)
+        {
+            Nodo aux = PrimerNodo;
+            if (EstaVacia())
+            {
+                return "LISTA VACIA";
+
+            }
+            while (aux != null)
+            {
+                if (aux.Informacion == dato)
+                {
+                    Nodo nodoEliminar = aux.ReferenciaSiguiente;
+                    if (nodoEliminar == null)
+                    {
+                        return "NO HAY NODOS POR ELIMINAR DESPUES DEL DATO: " + dato;
+
+                    }
+                    else
+                    {
+                        if (nodoEliminar.ReferenciaSiguiente == null)
+                        {
+                            aux.ReferenciaSiguiente = null;
+                            UltimoNodo = aux;
+                            return "NODO ELIMINADO CON EXITO";
+                        }
+                        aux.ReferenciaSiguiente = nodoEliminar.ReferenciaSiguiente;
+                        if (nodoEliminar.ReferenciaSiguiente != null)
+                        {
+                            nodoEliminar.ReferenciaSiguiente.ReferenciaAnterior = aux;
+                            return "NODO ELIMINADO CON EXITO";
+                        }
+                        
+
+                    }
+                }
+                aux = aux.ReferenciaSiguiente;
+
+            }
+            return "DATO NO ENCONTRADO EN LA LISTA";
+        }
+        public string AgregarAlInicio(string nuevoDato)
+        {
+            Nodo nuevoNodo = new Nodo();
+            nuevoNodo.Informacion = nuevoDato;
+            if (EstaVacia())
+            {
+                PrimerNodo = nuevoNodo;
+                return "NODO AGREGADO CON EXITO AL INICO, (ANTERIORMENTE LA LISTA ESTABA VACIA)";
+            }
+            nuevoNodo.ReferenciaSiguiente = PrimerNodo;
+            PrimerNodo.ReferenciaAnterior = nuevoNodo;
+            PrimerNodo = nuevoNodo;
+            return "NODO AGREGADO CON EXITO AL INICIO";
+        }
     }
 }

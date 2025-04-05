@@ -12,7 +12,8 @@
 <div class="mb-3">
     <label>Nuevo Valor:</label>
     <input class="form-control" @bind="nuevoValor" />
-    <button class="btn btn-primary mt-1" @onclick="AgregarAlFinal">Agregar Nodo</button>
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
+    <button class="btn btn-primary" @onclick="AgregarAlInicio">Agregar al inicio</button>
 </div>
 
 <div class="mb-3">
@@ -41,6 +42,14 @@
         {
             Nodo nuevo = new Nodo(nuevoValor);
             mensaje = lista.AgregarAlFinal(nuevo);
+        }
+    }
+    private void AgregarAlInicio()
+    {
+        if (!string.IsNullOrWhiteSpace(nuevoValor))
+        {
+            Nodo nuevo = new Nodo(nuevoValor);
+            mensaje = lista.AgregarAlInicio(nuevo);
         }
     }
 

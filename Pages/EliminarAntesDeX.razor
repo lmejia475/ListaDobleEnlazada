@@ -7,7 +7,8 @@
 <h1>Agregar a la Lista</h1>
 <div>
     <input id="inputX" class="form-control" @bind-value="ValorNodo"/>
-    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar</button>
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
+    <button class="btn btn-primary" @onclick="AgregarAlInicio">Agregar al inicio</button>
 </div>
 <p>@MensajeAgregarFinal</p>
 
@@ -56,6 +57,11 @@
     private void AgregarAlFinal()
     {
         MensajeAgregarFinal = Lista.AgregarAlFinal(AgregarNodo());
+    }
+
+    private void AgregarAlInicio()
+    {
+        MensajeAgregarFinal = Lista.AgregarAlInicio(AgregarNodo());
     }
 
     private void EliminarAntesDeDatoX()

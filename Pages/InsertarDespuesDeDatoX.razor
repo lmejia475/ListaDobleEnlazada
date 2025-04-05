@@ -1,0 +1,92 @@
+﻿@page "/InsertarDespuesDeDatoX"
+@using ListaEnlazadaDoble.Services
+@using ListaEnlazadaDoble.Models
+
+<PageTitle>Insertar Después de X</PageTitle>
+
+<h1>Insertar Después de Dato X</h1>
+
+<div>
+    <h2>Agregar Nodo al Inicio</h2>
+    <input id="nuevoNodoInicio" class="form-control" @bind-value="NuevoDatoInicio" placeholder="Ingresa el nuevo nodo al inicio" />
+    <button class="btn btn-primary" @onclick="AgregarAlFinal">Agregar al final</button>
+    <button class="btn btn-primary" @onclick="AgregarNodoInicio">Agregar al inicio</button>
+</div>
+<p>@MensajeAgregarInicio</p>
+
+<div>
+    <h2>Insertar Nodo Después de un Dato</h2>
+    <input id="datoX" class="form-control" @bind-value="DatoX" placeholder="Ingresa el dato X" />
+    <input id="nuevoNodo" class="form-control mt-2" @bind-value="NuevoDato" placeholder="Ingresa el nuevo nodo después de X" />
+    <button class="btn btn-primary mt-2" @onclick="InsertarDespuesDeX">Insertar después de X</button>
+</div>
+<p>@MensajeInsertar</p>
+
+<h2>Elementos en la Lista</h2>
+<ul class="list-group">
+    @{
+        Nodo aux = Lista.PrimerNodo;
+        while (aux != null)
+        {
+            <li class="list-group-item">@aux.Informacion</li>
+            aux = aux.ReferenciaSiguiente;
+        }
+    }
+</ul>
+
+@code {
+    public string MensajeAgregarInicio;
+    public string MensajeInsertar;
+    public string NuevoDatoInicio;
+    public string DatoX;
+    public string NuevoDato;
+
+    public LED Lista;
+
+    protected override void OnInitialized()
+    {
+        Lista = new LED(); // Inicializa la lista
+        base.OnInitialized();
+    }
+
+    private void AgregarNodoInicio()
+    {
+        if (!string.IsNullOrWhiteSpace(NuevoDatoInicio))
+        {
+            Nodo nuevoNodo = new Nodo { Informacion = NuevoDatoInicio };
+            MensajeAgregarInicio = Lista.AgregarNodoInicio(nuevoNodo); // Usa el método proporcionado
+            NuevoDatoInicio = ""; // Limpia el campo
+        }
+        else
+        {
+            MensajeAgregarInicio = "Por favor, ingresa un valor válido.";
+        }
+    }
+
+    private void AgregarAlFinal()
+    {
+        if (!string.IsNullOrWhiteSpace(NuevoDatoInicio))
+        {
+            Nodo nuevoNodo = new Nodo { Informacion = NuevoDatoInicio };
+            MensajeAgregarInicio = Lista.AgregarAlFinal(nuevoNodo);
+        }
+        else
+        {
+            MensajeAgregarInicio = "Por favor, ingresa un valor válido.";
+        }
+    }
+
+    private void InsertarDespuesDeX()
+    {
+        if (!string.IsNullOrWhiteSpace(DatoX) && !string.IsNullOrWhiteSpace(NuevoDato))
+        {
+            MensajeInsertar = Lista.InsertarDespuesDeX(DatoX, NuevoDato); // Usa el método InsertarDespuesDeX
+            DatoX = ""; // Limpia el campo
+            NuevoDato = ""; // Limpia el campo
+        }
+        else
+        {
+            MensajeInsertar = "Por favor, ingresa valores válidos para Dato X y el nuevo nodo.";
+        }
+    }
+}
