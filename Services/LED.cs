@@ -243,6 +243,79 @@ namespace ListaEnlazadaDoble.Services
             return $"No se encontró un nodo con la información '{infoX}'.";
         }
 
+        public string InsertarAntesDeX(int posicion, string informacion)
+        {
+            if (posicion < 0 || PrimerNodo == null) return "Posición inválida"; // Verifica posición inválida o lista vacía
 
+            Nodo nodoNuevo = new Nodo(informacion);
+            Nodo nodoActual = PrimerNodo;
+
+            // Si la posición es 0, insertar al inicio
+            if (posicion == 0)
+            {
+                nodoNuevo.ReferenciaSiguiente = PrimerNodo;
+                PrimerNodo.ReferenciaAnterior = nodoNuevo;
+                PrimerNodo = nodoNuevo;
+                return "Nodo insertado correctamente";
+            }
+
+            for (int i = 0; nodoActual != null && i < posicion; i++)
+            {
+                nodoActual = nodoActual.ReferenciaSiguiente;
+            }
+
+            if (nodoActual == null) return "Posición fuera de rango"; 
+
+            nodoNuevo.ReferenciaSiguiente = nodoActual;
+            nodoNuevo.ReferenciaAnterior = nodoActual.ReferenciaAnterior;
+
+            if (nodoActual.ReferenciaAnterior != null)
+            {
+                nodoActual.ReferenciaAnterior.ReferenciaSiguiente = nodoNuevo;
+            }
+
+            nodoActual.ReferenciaAnterior = nodoNuevo;
+
+            return "Nodo insertado correctamente";
+        }
+
+        public string InsertarDespuesDeX(int posicion, string informacion)
+        {
+            if (posicion < 0 || PrimerNodo == null) return "Posición inválida"; 
+
+            Nodo nodoNuevo = new Nodo(informacion);
+            Nodo nodoActual = PrimerNodo;
+
+            for (int i = 0; nodoActual != null && i < posicion; i++)
+            {
+                nodoActual = nodoActual.ReferenciaSiguiente;
+            }
+
+            if (nodoActual == null) return "Posición fuera de rango"; 
+
+            nodoNuevo.ReferenciaSiguiente = nodoActual.ReferenciaSiguiente;
+            nodoNuevo.ReferenciaAnterior = nodoActual;
+
+            if (nodoActual.ReferenciaSiguiente != null)
+            {
+                nodoActual.ReferenciaSiguiente.ReferenciaAnterior = nodoNuevo;
+            }
+
+            nodoActual.ReferenciaSiguiente = nodoNuevo;
+
+            return "Nodo insertado correctamente";
+        }
+
+        public List<string> ObtenerValores()
+        {
+            List<string> valores = new List<string>();
+            Nodo? temporal = PrimerNodo;
+            while (temporal != null)
+            {
+                valores.Add(temporal.Informacion);
+                temporal = temporal.ReferenciaSiguiente;
+            }
+            return valores;
+        }
     }
 }
